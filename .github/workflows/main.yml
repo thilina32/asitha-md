@@ -1,31 +1,30 @@
 on:
   push:
     branches:
-main
+      - main # මෙතන list item එකක් (hyphen) සහ indentation අවශ්‍යයි
   pull_request:
     branches:
-main
+      - main # මෙතනත්
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  build: # 'jobs' යටතේ 'build' job එක indent විය යුතුයි
+    runs-on: ubuntu-latest # 'build' යටතේ අනෙක් දේවල් indent විය යුතුයි
 
     strategy:
       matrix:
         node-version: [20.x]
 
-    steps:
-name: Checkout repository
-      uses: actions/checkout@v3
+    steps: # 'steps' යනු list එකක්
+      - name: Checkout repository # සෑම step එකක්ම '-' (hyphen) එකකින් පටන් ගත යුතුයි
+        uses: actions/checkout@v3
 
-name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with: # 'uses' සමග 'with' භාවිතා කරන විට එය indent කරන්න
+          node-version: ${{ matrix.node-version }}
 
-name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-name: Start application
-      run: npm start
+      - name: Start application
+        run: npm start
