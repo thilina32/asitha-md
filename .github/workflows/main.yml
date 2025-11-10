@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test: # Job එකට පැහැදිලි නමක්
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x] # Node versions 2ක් test කළ හැකියි
+
+    steps:
+      # 1. Code එක checkout කිරීම
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js setup කිරීම
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # npm packages ස්වයංක්‍රීයව cache කරයි
+
+      # 3. Dependencies install කිරීම (cache එක නිසා වේගවත්)
+      - name: Install dependencies
+        run: npm ci # 'npm install' වෙනුවට 'npm ci' වඩාත් සුදුසුයි
+
+      # 4. App එක Build කිරීම (අවශ්‍ය නම්)
+      - name: Build project
+        run: npm run build --if-present # 'build' script එකක් ඇත්නම් පමණක් run වේ
+
+      # 5. Tests run කිරීම (npm start වෙනුවට)
+      - name: Run tests
+        run: npm test --if-present # 'test' script එකක් ඇත්නම් පමණක් run වේ
