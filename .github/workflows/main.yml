@@ -14,7 +14,7 @@ jobs:
       matrix:
         node-version: [20.x]
 
-    steps: # 'steps' යනු list එකක්
+    steps:
       - name: Checkout repository # සෑම step එකක්ම '-' (hyphen) එකකින් පටන් ගත යුතුයි
         uses: actions/checkout@v3
 
